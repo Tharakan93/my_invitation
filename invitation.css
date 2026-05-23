@@ -1,0 +1,80 @@
+/* Custom Fonts Mapping */
+.font-serif {
+    font-family: 'Cinzel', serif;
+}
+
+.font-script {
+    font-family: 'Great Vibes', cursive;
+}
+
+/* Base Styles */
+body {
+    background-color: #fdf2d8; /* Cream/Light Peach */
+    color: #551a2b; /* Dark Maroon */
+}
+
+/* Leaf Decorations Animations */
+.leaf-tl {
+    animation: sway 6s ease-in-out infinite alternate;
+    transform-origin: top left;
+}
+
+.leaf-br {
+    animation: sway 7s ease-in-out infinite alternate-reverse;
+    transform-origin: bottom right;
+}
+
+@keyframes sway {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(2deg); }
+}
+
+/* Envelope Opening Animation */
+.envelope-container {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.envelope-container.opening {
+    opacity: 0;
+    transform: scale(1.5) translateY(-30px);
+    pointer-events: none;
+}
+
+/* Content Reveal Animations */
+.invitation-content {
+    /* Kept hidden until opened via JS */
+}
+
+.invitation-content.active {
+    display: flex;
+    animation: fadeInContent 1.2s ease-out forwards;
+}
+
+@keyframes fadeInContent {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Staggered text reveal */
+.reveal-text {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.reveal-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smooth scrolling for inner container if needed on small screens */
+.invitation-content::-webkit-scrollbar {
+    width: 4px;
+}
+.invitation-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.invitation-content::-webkit-scrollbar-thumb {
+    background: #a37c35;
+    border-radius: 4px;
+}

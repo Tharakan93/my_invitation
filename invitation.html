@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedding Invitation | Anusha & Tharaka</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="invitation.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#fdf2d8] text-[#551a2b] overflow-hidden antialiased flex items-center justify-center min-h-screen relative">
+
+    <!-- Leaf Decorations -->
+    <div class="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-tl">
+        <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-[#a37c35]" stroke-width="0.5">
+            <path d="M0,0 C20,10 40,30 50,50 C60,30 80,10 100,0 M50,50 C40,70 20,90 0,100 M50,50 C60,70 80,90 100,100" opacity="0.3"/>
+            <!-- A simpler decorative leaf SVG representation -->
+            <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z" fill="#a37c35" opacity="0.1"/>
+            <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z"/>
+            <path d="M20,5 Q40,15 45,45 Q15,35 20,5 Z"/>
+            <path d="M5,20 Q25,30 35,50 Q5,40 5,20 Z"/>
+        </svg>
+    </div>
+    
+    <div class="absolute bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-br">
+        <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-[#a37c35]" stroke-width="0.5" transform="rotate(180)">
+             <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z" fill="#a37c35" opacity="0.1"/>
+            <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z"/>
+            <path d="M20,5 Q40,15 45,45 Q15,35 20,5 Z"/>
+            <path d="M5,20 Q25,30 35,50 Q5,40 5,20 Z"/>
+        </svg>
+    </div>
+
+    <!-- Entrance Envelope/Cover -->
+    <div id="envelope" class="envelope-container flex flex-col items-center justify-center cursor-pointer transition-transform duration-700 hover:scale-105 z-20">
+        <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border border-[#a37c35] flex items-center justify-center mb-6 shadow-md bg-[#fdf2d8] relative overflow-hidden">
+            <div class="absolute inset-0 border-4 border-[#fdf2d8] rounded-full"></div>
+            <span class="font-script text-4xl sm:text-5xl text-[#a37c35]">A & T</span>
+        </div>
+        <p class="font-serif tracking-[0.2em] text-sm uppercase mb-2 text-[#551a2b] font-medium">You're Invited</p>
+        <p class="text-xs text-[#a37c35] font-serif tracking-widest animate-pulse mt-4">Tap to open</p>
+    </div>
+
+    <!-- Invitation Content -->
+    <main id="invitationContent" class="invitation-content hidden flex-col items-center justify-center w-full max-w-lg mx-auto z-10 px-6 py-12 relative h-full overflow-y-auto overflow-x-hidden">
+        
+        <div class="content-wrapper flex flex-col items-center text-center w-full pb-10">
+            
+            <p class="reveal-text font-serif tracking-widest text-[10px] sm:text-xs uppercase mb-3 font-semibold">MR. & MRS. CHANDRASIRI</p>
+            <p class="reveal-text font-serif tracking-widest text-[10px] sm:text-xs uppercase mb-3 font-semibold">TOGETHER WITH</p>
+            <p class="reveal-text font-serif tracking-widest text-[10px] sm:text-xs uppercase mb-6 font-semibold">MR. & MRS. JAYASINGHE</p>
+            
+            <p class="reveal-text font-serif tracking-widest text-[10px] sm:text-xs uppercase mb-6 leading-relaxed">REQUEST THE PLEASURE OF THE COMPANY OF</p>
+
+            <!-- Personalized Guest Name -->
+            <div class="reveal-text w-full py-3 mb-6 relative">
+                <div class="absolute inset-x-0 top-0 border-t border-dotted border-[#551a2b] opacity-30"></div>
+                <div class="absolute inset-x-0 bottom-0 border-b border-dotted border-[#551a2b] opacity-30"></div>
+                <p id="guestNameDisplay" class="font-serif tracking-widest text-sm sm:text-base uppercase font-bold text-[#551a2b]">MR. & MRS. / MR. / MRS. / MISS / FAMILY</p>
+            </div>
+            
+            <p class="reveal-text font-serif tracking-widest text-[10px] sm:text-xs uppercase mb-8 leading-relaxed max-w-[80%]">ON THE OCCASION OF THE MARRIAGE OF THEIR<br>LOVING DAUGHTER AND SON</p>
+            
+            <h1 class="reveal-text font-script text-6xl sm:text-7xl lg:text-8xl text-[#a37c35] leading-none mb-2 transform -rotate-2">Anusha</h1>
+            <span class="reveal-text font-script text-4xl sm:text-5xl text-[#a37c35] my-2">&amp;</span>
+            <h1 class="reveal-text font-script text-6xl sm:text-7xl lg:text-8xl text-[#a37c35] leading-none mb-10 transform -rotate-2">Tharaka</h1>
+            
+            <div class="reveal-text w-full flex flex-row justify-center items-center gap-6 sm:gap-10 mb-8 border-t border-[#a37c35] pt-8 opacity-0">
+                <div class="flex flex-col items-end text-right border-r border-[#551a2b] pr-6 sm:pr-10">
+                    <p class="font-serif tracking-widest text-xs uppercase">ON SATURDAY</p>
+                    <p class="font-serif text-lg tracking-widest uppercase mt-1">JULY</p>
+                    <p class="font-serif text-5xl sm:text-6xl font-normal leading-none my-1">04</p>
+                    <p class="font-serif tracking-widest text-sm">2026</p>
+                </div>
+                
+                <div class="flex flex-col items-start text-left pl-2">
+                    <p class="font-serif tracking-widest text-sm sm:text-base font-bold uppercase mb-1">ROYAL REST HOUSE</p>
+                    <p class="font-serif text-sm tracking-wide mb-3">Peradeniya</p>
+                    <p class="font-serif tracking-widest text-[10px] sm:text-xs uppercase text-[#551a2b]">FROM 05.30 PM ONWARDS</p>
+                </div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="reveal-text w-full flex justify-center gap-4 sm:gap-6 mb-8 mt-4 text-[#551a2b]">
+                <div class="flex flex-col items-center">
+                    <span id="cd-days" class="font-serif text-3xl sm:text-4xl font-bold">00</span>
+                    <span class="font-serif text-[8px] sm:text-[10px] tracking-widest uppercase">Days</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span id="cd-hours" class="font-serif text-3xl sm:text-4xl font-bold">00</span>
+                    <span class="font-serif text-[8px] sm:text-[10px] tracking-widest uppercase">Hours</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span id="cd-minutes" class="font-serif text-3xl sm:text-4xl font-bold">00</span>
+                    <span class="font-serif text-[8px] sm:text-[10px] tracking-widest uppercase">Mins</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span id="cd-seconds" class="font-serif text-3xl sm:text-4xl font-bold">00</span>
+                    <span class="font-serif text-[8px] sm:text-[10px] tracking-widest uppercase">Secs</span>
+                </div>
+            </div>
+
+            <div class="reveal-text mt-2 mb-6 font-serif text-[8px] sm:text-[10px] tracking-wider text-gray-600">
+                <p class="font-semibold uppercase text-[#551a2b] mb-1">RSVP CONTACTS</p>
+                <p>077 242 2456 - ANUSHA</p>
+                <p>071 715 1633 - THARAKA</p>
+            </div>
+
+            <p class="reveal-text font-serif text-[9px] sm:text-[10px] tracking-wide text-gray-600 mt-2 max-w-[80%] leading-relaxed mb-4">
+                To help us finalize our plans, kindly share your response<br>on or before 15th of June 2026
+            </p>
+
+            <!-- RSVP Action Buttons -->
+            <div class="reveal-text flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center max-w-sm">
+                <button onclick="sendRSVP(true)" class="flex-1 py-3 px-6 bg-[#551a2b] text-[#fdf2d8] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-transparent hover:text-[#551a2b] transition-colors rounded shadow-sm">
+                    Attending
+                </button>
+                <button onclick="sendRSVP(false)" class="flex-1 py-3 px-6 bg-transparent text-[#551a2b] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-[#551a2b] hover:text-[#fdf2d8] transition-colors rounded shadow-sm">
+                    Not Attending
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="invitation.js"></script>
+</body>
+</html>
