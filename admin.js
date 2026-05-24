@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const metricTotalGuests = document.getElementById('metricTotalGuests');
     const metricInvitesSent = document.getElementById('metricInvitesSent');
     const metricRSVPs = document.getElementById('metricRSVPs');
+    const metricDeclined = document.getElementById('metricDeclined');
     
     const guestTableBody = document.getElementById('guestTableBody');
     const messageTemplateInput = document.getElementById('messageTemplate');
@@ -137,6 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const attendingCount = parsedData.filter(g => g.status === 'Attending').length;
         metricRSVPs.textContent = attendingCount;
+
+        const declinedCount = parsedData.filter(g => g.status === 'Declined').length;
+        metricDeclined.textContent = declinedCount;
     }
 
     function getInvitationLink(guestName) {
