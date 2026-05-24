@@ -100,6 +100,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- Background Music Logic ---
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    let isMusicPlaying = false;
+
+    window.toggleMusic = function() {
+        if (!bgMusic) return;
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            isMusicPlaying = false;
+            if (musicToggle) {
+                musicToggle.innerHTML = '<i class="ph ph-speaker-slash text-lg"></i>';
+                musicToggle.classList.remove('animate-pulse');
+            }
+        } else {
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                if (musicToggle) {
+                    musicToggle.innerHTML = '<i class="ph ph-speaker-high text-lg"></i>';
+                    musicToggle.classList.add('animate-pulse');
+                }
+            }).catch(err => console.error("Error playing music:", err));
+        }
+    };
+
     // --- Interaction & Reveal Logic ---
     const envelope = document.getElementById('envelope');
     const invitationContent = document.getElementById('invitationContent');
@@ -117,6 +142,26 @@ document.addEventListener('DOMContentLoaded', () => {
             void invitationContent.offsetWidth; 
             invitationContent.classList.add('active');
             
+            // Show music button and start playing
+            if (musicToggle) {
+                musicToggle.classList.remove('hidden');
+            }
+            if (bgMusic) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    if (musicToggle) {
+                        musicToggle.innerHTML = '<i class="ph ph-speaker-high text-lg"></i>';
+                        musicToggle.classList.add('animate-pulse');
+                    }
+                }).catch(err => {
+                    console.log("Autoplay blocked or audio missing:", err);
+                    // If blocked/missing, keep button visible but in muted icon state so they can click it manually
+                    if (musicToggle) {
+                        musicToggle.innerHTML = '<i class="ph ph-speaker-slash text-lg"></i>';
+                    }
+                });
+            }
+
             // Staggered reveal for text elements
             revealElements.forEach((el, index) => {
                 setTimeout(() => {

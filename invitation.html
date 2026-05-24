@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Config File -->
     <script src="config.js"></script>
     
@@ -142,6 +144,14 @@
         </div>
 
     </main>
+
+    <!-- Background Music Audio -->
+    <audio id="bgMusic" src="music.mp3" loop></audio>
+
+    <!-- Floating Music Toggle Button -->
+    <button id="musicToggle" onclick="toggleMusic()" class="fixed top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#a37c35]/30 text-[#551a2b] flex items-center justify-center shadow-md transition-all hover:scale-110 active:scale-95 hidden">
+        <i class="ph ph-speaker-slash text-lg"></i>
+    </button>
 
     <script src="invitation.js"></script>
 </body>
