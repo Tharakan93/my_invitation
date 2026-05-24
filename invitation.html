@@ -15,10 +15,10 @@
     <!-- Config File -->
     <script src="config.js"></script>
 </head>
-<body class="bg-[#fdf2d8] text-[#551a2b] overflow-hidden antialiased flex items-center justify-center min-h-screen relative">
+<body class="bg-[#fdf2d8] text-[#551a2b] overflow-x-hidden antialiased flex items-center justify-center min-h-screen relative">
 
     <!-- Leaf Decorations -->
-    <div class="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-tl">
+    <div class="fixed top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-tl">
         <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-[#a37c35]" stroke-width="0.5">
             <path d="M0,0 C20,10 40,30 50,50 C60,30 80,10 100,0 M50,50 C40,70 20,90 0,100 M50,50 C60,70 80,90 100,100" opacity="0.3"/>
             <!-- A simpler decorative leaf SVG representation -->
@@ -29,7 +29,7 @@
         </svg>
     </div>
     
-    <div class="absolute bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-br">
+    <div class="fixed bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 opacity-80 pointer-events-none z-0 leaf-br">
         <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-[#a37c35]" stroke-width="0.5" transform="rotate(180)">
              <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z" fill="#a37c35" opacity="0.1"/>
             <path d="M10,10 Q30,10 40,40 Q10,30 10,10 Z"/>
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Invitation Content -->
-    <main id="invitationContent" class="invitation-content hidden flex-col items-center justify-center w-full max-w-lg mx-auto z-10 px-6 py-12 relative h-full overflow-y-auto overflow-x-hidden">
+    <main id="invitationContent" class="invitation-content hidden flex-col items-center w-full max-w-lg mx-auto z-10 px-6 py-8 sm:py-12 relative min-h-screen">
         
         <div class="content-wrapper flex flex-col items-center text-center w-full pb-10">
             
