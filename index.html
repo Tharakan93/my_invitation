@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Config File -->
+    <script src="config.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600&display=swap');
         body {
@@ -79,21 +81,19 @@
             </div>
         </div>
 
-        <!-- Upload Section -->
+        <!-- Sync Section -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
             <div class="flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-slate-900 mb-1 theme-heading">Upload Guest List</h2>
-                    <p class="text-sm text-slate-500 max-w-xl">Upload an Excel file (.xlsx) with columns named <span class="font-semibold text-slate-700">"Name"</span> and <span class="font-semibold text-slate-700">"Phone"</span>.</p>
+                    <h2 class="text-lg font-semibold text-slate-900 mb-1 theme-heading">Google Sheets Database</h2>
+                    <p class="text-sm text-slate-500 max-w-xl">Configure your API URL in <span class="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">config.js</span> to automatically sync with your Google Sheet.</p>
                 </div>
                 
-                <div class="w-full md:w-auto relative group">
-                    <input type="file" id="excelUpload" accept=".xlsx, .xls" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    <div class="bg-[#fdf2d8]/30 hover:bg-[#fdf2d8] border-2 border-dashed border-[#a37c35]/40 group-hover:border-[#a37c35] transition-colors rounded-xl px-6 py-4 flex flex-col items-center justify-center gap-2 text-center">
-                        <i class="ph ph-file-xls text-3xl text-[#a37c35]/60 group-hover:text-[#a37c35] transition-colors"></i>
-                        <span class="text-sm font-medium text-slate-700">Click to select file</span>
-                        <span class="text-xs text-slate-400" id="fileNameDisplay">No file chosen</span>
-                    </div>
+                <div class="w-full md:w-auto">
+                    <button onclick="fetchDataFromSheet()" class="flex items-center gap-2 px-6 py-3 bg-[#551a2b] hover:bg-[#3d131f] text-[#fdf2d8] rounded-xl transition-colors font-medium shadow-sm w-full md:w-auto justify-center">
+                        <i class="ph ph-arrows-clockwise text-xl" id="syncIcon"></i>
+                        <span>Sync Now</span>
+                    </button>
                 </div>
             </div>
         </div>

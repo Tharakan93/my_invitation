@@ -41,23 +41,63 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
     updateCountdown(); // Initial call
 
-    // --- RSVP Logic via WhatsApp ---
-    window.sendRSVP = function(isAttending) {
-        // We use Anusha's number by default for RSVPs
-        const phoneNumber = "94772422456"; 
-        const nameParam = guestName ? decodeURIComponent(guestName) : "A Guest";
+    // --- RSVP Logic via Google Sheets ---
+    window.sendRSVP = async function(isAttending) {
+        const nameParam = guestName ? decodeURIComponent(guestName) : "Unknown Guest";
+        const status = isAttending ? "Attending" : "Declined";
         
-        let message = "";
-        if (isAttending) {
-            message = `Hi Anusha, ${nameParam} will be attending the wedding! We can't wait!`;
-        } else {
-            message = `Hi Anusha, ${nameParam} unfortunately won't be able to make it to the wedding. Wishing you both the best!`;
+        const btnAttending = document.getElementById('btnAttending');
+        const btnDeclined = document.getElementById('btnDeclined');
+        const rsvpMessage = document.getElementById('rsvpMessage');
+        const buttonsContainer = document.getElementById('rsvpButtons');
+        
+        // Visual feedback
+        if(btnAttending) btnAttending.disabled = true;
+        if(btnDeclined) btnDeclined.disabled = true;
+        
+        if (!API_URL) {
+            // Fallback to WhatsApp if API is not configured
+            const phoneNumber = "94772422456"; 
+            let message = isAttending 
+                ? `Hi Anusha, ${nameParam} will be attending the wedding! We can't wait!`
+                : `Hi Anusha, ${nameParam} unfortunately won't be able to make it to the wedding. Wishing you both the best!`;
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+            if(buttonsContainer) buttonsContainer.style.display = 'none';
+            if(rsvpMessage) rsvpMessage.classList.remove('hidden');
+            return;
         }
-        
-        const encodedMessage = encodeURIComponent(message);
-        const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-        
-        window.open(waUrl, '_blank');
+
+        try {
+            if(isAttending) {
+                btnAttending.textContent = "Sending...";
+            } else {
+                btnDeclined.textContent = "Sending...";
+            }
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'updateRSVP', name: nameParam, status: status })
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                if(buttonsContainer) buttonsContainer.style.display = 'none';
+                if(rsvpMessage) {
+                    rsvpMessage.classList.remove('hidden');
+                    rsvpMessage.textContent = "Thank you! Your RSVP has been saved.";
+                }
+            } else {
+                alert("Sorry, there was an error saving your RSVP. Please contact Anusha.");
+                if(btnAttending) { btnAttending.disabled = false; btnAttending.textContent = "Attending"; }
+                if(btnDeclined) { btnDeclined.disabled = false; btnDeclined.textContent = "Not Attending"; }
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Network error. Please try again.");
+            if(btnAttending) { btnAttending.disabled = false; btnAttending.textContent = "Attending"; }
+            if(btnDeclined) { btnDeclined.disabled = false; btnDeclined.textContent = "Not Attending"; }
+        }
     };
 
     // --- Interaction & Reveal Logic ---

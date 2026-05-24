@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Config File -->
+    <script src="config.js"></script>
 </head>
 <body class="bg-[#fdf2d8] text-[#551a2b] overflow-hidden antialiased flex items-center justify-center min-h-screen relative">
 
@@ -116,14 +118,16 @@
             </p>
 
             <!-- RSVP Action Buttons -->
-            <div class="reveal-text flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center max-w-sm">
-                <button onclick="sendRSVP(true)" class="flex-1 py-3 px-6 bg-[#551a2b] text-[#fdf2d8] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-transparent hover:text-[#551a2b] transition-colors rounded shadow-sm">
+            <div class="reveal-text flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center max-w-sm" id="rsvpButtons">
+                <button onclick="sendRSVP(true)" id="btnAttending" class="flex-1 py-3 px-6 bg-[#551a2b] text-[#fdf2d8] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-transparent hover:text-[#551a2b] transition-colors rounded shadow-sm">
                     Attending
                 </button>
-                <button onclick="sendRSVP(false)" class="flex-1 py-3 px-6 bg-transparent text-[#551a2b] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-[#551a2b] hover:text-[#fdf2d8] transition-colors rounded shadow-sm">
+                <button onclick="sendRSVP(false)" id="btnDeclined" class="flex-1 py-3 px-6 bg-transparent text-[#551a2b] font-serif text-xs tracking-widest uppercase border border-[#551a2b] hover:bg-[#551a2b] hover:text-[#fdf2d8] transition-colors rounded shadow-sm">
                     Not Attending
                 </button>
             </div>
+            
+            <p id="rsvpMessage" class="reveal-text font-serif text-[10px] text-green-700 mt-4 hidden font-semibold uppercase tracking-widest">RSVP Successfully Saved!</p>
 
         </div>
 

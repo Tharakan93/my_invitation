@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const excelUpload = document.getElementById('excelUpload');
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
     
     // Sections
     const metricsSection = document.getElementById('metricsSection');
@@ -16,84 +14,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageTemplateInput = document.getElementById('messageTemplate');
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
+    const syncIcon = document.getElementById('syncIcon');
 
     let parsedData = [];
-    let stats = {
-        sent: 0,
-        rsvps: 0
-    };
 
     // Default message template
     const defaultMessage = "Hi {name},\n\nMr. & Mrs. Chandrasiri and Mr. & Mrs. Jayasinghe cordially invite you to the wedding of Anusha & Tharaka on July 04, 2026.\n\nPlease view your formal invitation here:\n{link}";
     messageTemplateInput.value = defaultMessage;
 
-    // Handle File Upload
-    excelUpload.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    window.fetchDataFromSheet = async function() {
+        if (!API_URL) {
+            alert("Please paste your Google Apps Script Web App URL into config.js first!");
+            return;
+        }
 
-        fileNameDisplay.textContent = file.name;
+        syncIcon.classList.add('animate-spin');
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const firstSheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[firstSheetName];
-            const json = XLSX.utils.sheet_to_json(worksheet);
+        try {
+            const response = await fetch(API_URL);
+            const data = await response.json();
             
-            processData(json);
-        };
-        reader.readAsArrayBuffer(file);
-    });
-
-    function processData(data) {
-        parsedData = [];
-        
-        data.forEach((row, index) => {
-            let name = '';
-            let phone = '';
-
-            for (const key in row) {
-                const lowerKey = key.toLowerCase().trim();
-                if (lowerKey === 'name' || lowerKey.includes('guest') || lowerKey.includes('full name')) {
-                    name = String(row[key]);
-                }
-                if (lowerKey === 'phone' || lowerKey.includes('number') || lowerKey.includes('contact')) {
-                    phone = String(row[key]);
-                }
+            if (data.error) {
+                alert("Error from sheet: " + data.error);
+                return;
             }
+            
+            parsedData = data.map((guest, index) => ({
+                id: index + 1,
+                name: guest.name.trim(),
+                phone: guest.phone ? String(guest.phone).replace(/[^0-9+]/g, '') : '',
+                originalPhone: guest.phone,
+                status: guest.status || 'Pending',
+                sent: guest.sent === true
+            }));
 
-            if (name) {
-                let cleanPhone = phone ? phone.replace(/[^0-9+]/g, '') : '';
-                if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
-                    cleanPhone = '94' + cleanPhone.substring(1); 
-                } else if (cleanPhone.startsWith('+')) {
-                    cleanPhone = cleanPhone.substring(1);
-                }
-
-                parsedData.push({
-                    id: index + 1,
-                    name: name.trim(),
-                    phone: cleanPhone,
-                    originalPhone: phone,
-                    status: 'Pending', // Default RSVP status
-                    sent: false
-                });
-            }
-        });
-
-        if (parsedData.length > 0) {
             updateMetrics();
             renderTable();
+            
             metricsSection.style.display = 'grid';
             guestListSection.style.display = 'block';
             settingsSection.style.display = 'block';
-            showToast(`Successfully loaded ${parsedData.length} guests.`);
-        } else {
-            alert("Could not find a 'Name' column in the Excel file.");
+            showToast(`Successfully synced ${parsedData.length} guests.`);
+        } catch (error) {
+            console.error("Fetch error:", error);
+            alert("Failed to fetch data. Make sure the API_URL is correct and deployed as 'Anyone'.");
+        } finally {
+            syncIcon.classList.remove('animate-spin');
         }
-    }
+    };
 
     function renderTable() {
         guestTableBody.innerHTML = '';
@@ -141,11 +109,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'bg-slate-50 text-slate-600';
     }
 
-    window.updateRSVP = function(index, newStatus) {
-        parsedData[index].status = newStatus;
+    window.updateRSVP = async function(index, newStatus) {
+        const guest = parsedData[index];
+        guest.status = newStatus;
         updateMetrics();
-        // Re-render that specific row's select colors via a full render for simplicity (could be optimized)
         renderTable(); 
+
+        if (API_URL) {
+            try {
+                // Send update to Google Sheet
+                await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'updateRSVP', name: guest.name, status: newStatus })
+                });
+                showToast("RSVP saved to Google Sheets");
+            } catch (e) {
+                console.error(e);
+            }
+        }
     };
 
     function updateMetrics() {
@@ -159,13 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getInvitationLink(guestName) {
-        const pathArray = window.location.pathname.split('/');
-        pathArray.pop();
-        const basePath = pathArray.join('/');
-        const origin = window.location.origin;
-        
-        let baseUrl = origin === "file://" ? "http://yourweddingdomain.com" : origin + basePath;
-        if(baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
+        // Use SITE_BASE_URL from config.js (GitHub Pages URL)
+        const baseUrl = (typeof SITE_BASE_URL !== 'undefined' && SITE_BASE_URL)
+            ? SITE_BASE_URL
+            : window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
 
         const url = new URL(`${baseUrl}/invitation.html`);
         url.searchParams.append('name', guestName);
@@ -180,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    window.sendWhatsApp = function(index) {
+    window.sendWhatsApp = async function(index) {
         const guest = parsedData[index];
         const link = getInvitationLink(guest.name);
         let message = messageTemplateInput.value;
@@ -196,23 +174,33 @@ document.addEventListener('DOMContentLoaded', () => {
         
         window.open(waUrl, '_blank');
         
-        // Mark as sent and update UI
+        // Mark as sent
         if(!guest.sent) {
             guest.sent = true;
             updateMetrics();
             renderTable();
+
+            if (API_URL) {
+                try {
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'updateSent', name: guest.name })
+                    });
+                } catch(e) {
+                    console.error(e);
+                }
+            }
         }
     };
 
     window.exportToCSV = function() {
         if(parsedData.length === 0) return;
         
-        // CSV Header
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent += "Name,Phone,RSVP Status,Invite Sent\n";
         
         parsedData.forEach(row => {
-            const name = `"${row.name.replace(/"/g, '""')}"`; // Escape quotes
+            const name = `"${row.name.replace(/"/g, '""')}"`;
             const phone = row.originalPhone || '';
             const status = row.status;
             const sent = row.sent ? "Yes" : "No";
