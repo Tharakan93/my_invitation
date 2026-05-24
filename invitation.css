@@ -8,7 +8,12 @@
 }
 
 /* Base Styles */
-body {
+html, body {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
     background-color: #fdf2d8; /* Cream/Light Peach */
     color: #551a2b; /* Dark Maroon */
 }
