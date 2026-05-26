@@ -24,8 +24,29 @@
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col bg-[#fdf2d8]">
 
+    <!-- PIN Lock Screen -->
+    <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#fdf2d8]">
+        <div class="bg-white p-8 rounded-3xl shadow-xl max-w-sm w-full mx-4 text-center border border-[#a37c35]/20">
+            <div class="w-16 h-16 mx-auto bg-[#551a2b] text-[#fdf2d8] rounded-full flex items-center justify-center mb-6">
+                <i class="ph ph-lock-key text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold theme-heading mb-2">Admin Portal</h2>
+            <p class="text-sm text-slate-500 mb-6">Enter PIN to access guest management.</p>
+            
+            <div class="space-y-4">
+                <input type="password" id="pinInput" placeholder="Enter PIN" class="w-full text-center text-2xl tracking-widest py-3 rounded-xl border border-slate-300 focus:border-[#a37c35] focus:ring-[#a37c35] outline-none transition-all" maxlength="4">
+                <button onclick="checkPin()" class="w-full py-3 bg-[#551a2b] hover:bg-[#3d131f] text-[#fdf2d8] rounded-xl font-medium transition-colors shadow-sm">
+                    Unlock
+                </button>
+            </div>
+            <p id="pinError" class="text-rose-500 text-sm mt-3 hidden">Incorrect PIN. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- App Content (Hidden initially) -->
+    <div id="appContent" class="hidden flex-col min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-[#a37c35]/20 sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -153,6 +174,8 @@
     <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 bg-slate-800 text-white px-4 py-3 rounded-xl shadow-lg font-medium text-sm pointer-events-none">
         <i class="ph-fill ph-check-circle text-green-400 text-lg"></i>
         <span id="toastMessage">Action successful</span>
+    </div>
+
     </div>
 
     <script src="admin.js"></script>

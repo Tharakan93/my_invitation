@@ -1,5 +1,41 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Auth PIN Check
+const CORRECT_PIN = "0704"; // Set to wedding date July 04
+
+function checkPin() {
+    const pinInput = document.getElementById('pinInput').value;
+    const pinError = document.getElementById('pinError');
+    const lockScreen = document.getElementById('lockScreen');
+    const appContent = document.getElementById('appContent');
     
+    if (pinInput === CORRECT_PIN) {
+        sessionStorage.setItem('isAdminAuth', 'true');
+        lockScreen.classList.add('hidden');
+        appContent.classList.remove('hidden');
+        appContent.classList.add('flex');
+    } else {
+        pinError.classList.remove('hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Check auth on load
+    const lockScreen = document.getElementById('lockScreen');
+    const appContent = document.getElementById('appContent');
+    if (sessionStorage.getItem('isAdminAuth') === 'true' && lockScreen) {
+        lockScreen.classList.add('hidden');
+        appContent.classList.remove('hidden');
+        appContent.classList.add('flex');
+    }
+
+    const pinInputElem = document.getElementById('pinInput');
+    if(pinInputElem) {
+        pinInputElem.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPin();
+            }
+        });
+    }
+
     // Sections
     const metricsSection = document.getElementById('metricsSection');
     const guestListSection = document.getElementById('guestListSection');
