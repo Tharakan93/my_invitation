@@ -169,6 +169,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 300 + (index * 150)); // Base delay + staggered delay
             });
 
+            // Show scroll indicator after a delay
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            if (scrollIndicator) {
+                setTimeout(() => {
+                    scrollIndicator.classList.remove('hidden');
+                    setTimeout(() => {
+                        scrollIndicator.classList.remove('opacity-0');
+                    }, 50);
+                }, 1500); // Wait for content to reveal
+                
+                // Hide indicator on scroll
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) {
+                        scrollIndicator.classList.add('opacity-0');
+                        setTimeout(() => scrollIndicator.classList.add('hidden'), 1000);
+                    }
+                });
+            }
+
         }, 700); // matches CSS transition duration
     });
 });
